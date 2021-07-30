@@ -1335,7 +1335,7 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #define FILAMENT_RUNOUT_SCRIPT "G27"
+  #define FILAMENT_RUNOUT_SCRIPT "M600"
 
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
@@ -1399,8 +1399,8 @@
  * these options to restore the prior leveling state or to always enable
  * leveling immediately after G28.
  */
-#define RESTORE_LEVELING_AFTER_G28
-//#define ENABLE_LEVELING_AFTER_G28
+//#define RESTORE_LEVELING_AFTER_G28
+#define ENABLE_LEVELING_AFTER_G28
 
 /**
  * Auto-leveling needs preheating
@@ -1686,7 +1686,7 @@
 
 #define PREHEAT_2_LABEL       "PLA"
 #define PREHEAT_2_TEMP_HOTEND 190
-#define PREHEAT_2_TEMP_BED     60
+#define PREHEAT_2_TEMP_BED     50
 #define PREHEAT_2_FAN_SPEED   0 // Value from 0 to 255
 
 #define PREHEAT_3_LABEL       "PETG"
@@ -1698,6 +1698,11 @@
 #define PREHEAT_4_TEMP_HOTEND 240
 #define PREHEAT_4_TEMP_BED     90
 #define PREHEAT_4_FAN_SPEED   0 // Value from 0 to 255
+
+#define PREHEAT_5_LABEL       "TPU"
+#define PREHEAT_5_TEMP_HOTEND 220
+#define PREHEAT_5_TEMP_BED     60
+#define PREHEAT_5_FAN_SPEED   255 // Value from 0 to 255
 
 /**
  * Nozzle Park
@@ -1759,19 +1764,19 @@
  *   Caveats: The ending Z should be the same as starting Z.
  * Attention: EXPERIMENTAL. G-code arguments may change.
  */
-//#define NOZZLE_CLEAN_FEATURE
+#define NOZZLE_CLEAN_FEATURE
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
   // Default number of pattern repetitions
-  #define NOZZLE_CLEAN_STROKES  12
+  #define NOZZLE_CLEAN_STROKES  3
 
   // Default number of triangles
-  #define NOZZLE_CLEAN_TRIANGLES  3
+  #define NOZZLE_CLEAN_TRIANGLES  4
 
   // Specify positions for each tool as { { X, Y, Z }, { X, Y, Z } }
   // Dual hotend system may use { {  -20, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) },  {  420, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) }}
-  #define NOZZLE_CLEAN_START_POINT { {  30, 30, (Z_MIN_POS + 1) } }
-  #define NOZZLE_CLEAN_END_POINT   { { 100, 60, (Z_MIN_POS + 1) } }
+  #define NOZZLE_CLEAN_START_POINT { {  230, 0, (Z_MIN_POS + 8) } }
+  #define NOZZLE_CLEAN_END_POINT   { { 245, 40, (Z_MIN_POS + 8) } }
 
   // Circular pattern radius
   #define NOZZLE_CLEAN_CIRCLE_RADIUS 6.5
@@ -1781,7 +1786,7 @@
   #define NOZZLE_CLEAN_CIRCLE_MIDDLE NOZZLE_CLEAN_START_POINT
 
   // Move the nozzle to the initial position after cleaning
-  #define NOZZLE_CLEAN_GOBACK
+  //#define NOZZLE_CLEAN_GOBACK
 
   // For a purge/clean station that's always at the gantry height (thus no Z move)
   //#define NOZZLE_CLEAN_NO_Z
@@ -1790,8 +1795,8 @@
   //#define NOZZLE_CLEAN_NO_Y
 
   // Require a minimum hotend temperature for cleaning
-  #define NOZZLE_CLEAN_MIN_TEMP 170
-  //#define NOZZLE_CLEAN_HEATUP       // Heat up the nozzle instead of skipping wipe
+  #define NOZZLE_CLEAN_MIN_TEMP 180
+  #define NOZZLE_CLEAN_HEATUP       // Heat up the nozzle instead of skipping wipe
 
   // Explicit wipe G-code script applies to a G12 with no arguments.
   //#define WIPE_SEQUENCE_COMMANDS "G1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nG0 X-10.0 Y-9.0"
